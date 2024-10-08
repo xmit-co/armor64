@@ -2,16 +2,19 @@ package armor64
 
 import (
 	"encoding/base64"
-	"errors"
-	"regexp"
 )
 
 var (
-	alphabet          = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
-	valid             = regexp.MustCompile("^[0-9A-Za-z_-]*$")
-	encoding          = base64.NewEncoding(alphabet).Strict().WithPadding(base64.NoPadding)
-	invalidCharsError = errors.New("input has invalid characters")
+	alphabet   = "-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz"
+	validChars [256]bool
+	encoding   = base64.NewEncoding(alphabet).Strict().WithPadding(base64.NoPadding)
 )
+
+func init() {
+	for _, c := range alphabet {
+		validChars[c] = true
+	}
+}
 
 // EncodedLen returns the length in bytes of the armor64 encoding
 // of an input buffer of length n.
@@ -35,8 +38,10 @@ func Encode(dst []byte, src []byte) {
 // If src contains invalid armor64 data, it will return the
 // number of bytes successfully written and [base64.CorruptInputError].
 func Decode(dst []byte, src []byte) (int, error) {
-	if !valid.Match(src) {
-		return 0, base64.CorruptInputError(0)
+	for _, c := range src {
+		if !validChars[c] {
+			return 0, base64.CorruptInputError(c)
+		}
 	}
 	return encoding.Decode(dst, src)
 }
@@ -47,9 +52,13 @@ func EncodeToString(src []byte) string {
 }
 
 // DecodeString returns the bytes represented by the armor64 string s.
+// If s contains invalid armor64 data, it will return nil and
+// [base64.CorruptInputError].
 func DecodeString(s string) ([]byte, error) {
-	if !valid.MatchString(s) {
-		return nil, invalidCharsError
+	for _, c := range s {
+		if !validChars[c] {
+			return nil, base64.CorruptInputError(c)
+		}
 	}
 	return encoding.DecodeString(s)
 }
