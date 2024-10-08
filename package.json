@@ -1,0 +1,13 @@
+{
+  "name": "armor64",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy",
+    "deploy": "npm run build && xmit armor64.org _site"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.0.0"
+  }
+}
