@@ -9,12 +9,12 @@ func TestArmor64(t *testing.T) {
 		{"", ""},
 		{"JP", "H_-"},
 		{"Hello, World!", "H5KgQ5wg74SjRalZ7F"},
-		{"armor64 is safe, strict, and stable. It is specified and easy to test. Do not settle for lesser formats.", "NM8hQr7qC10dRm0nNLO_A10nS68dNrFg754iO10nS54XQ5Ji73_o75_n76CkOLCdOa__O10WQaFVOL4nTH0oQm0oOMCoAX03Qm0iQrFVRqKoS5l_75OjRX0gOMCnOM7VOaxmQL4oRms"},
+		{"armor64 is safe, strict, and stable. It is specified and easy to test. Do not settle for lesser encodings.", "NM8hQr7qC10dRm0nNLO_A10nS68dNrFg754iO10nS54XQ5Ji73_o75_n76CkOLCdOa__O10WQaFVOL4nTH0oQm0oOMCoAX03Qm0iQrFVRqKoS5l_75OjRX0gOMCnOM7VOLtYQqGdQaSnAV"},
 	}
 	for _, test := range work {
 		encoded := EncodeToString([]byte(test.src))
 		if encoded != test.dst {
-			t.Fatalf("encoding failed: %v", encoded)
+			t.Fatalf("encoding failed: %v instead of %v", encoded, test.dst)
 		}
 		decoded, err := DecodeString(test.dst)
 		if err != nil {
