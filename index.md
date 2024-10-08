@@ -108,14 +108,18 @@ At the end of the input stream, if any of the remaining bits are not `0`, the in
 
 The following should encode and decode back to itself:
 
-- Empty string to itself
-- `JP` to `H_-`
-- `Hello, World!` to `H5KgQ5wg74SjRalZ7F`
-- `armor64 is safe, strict, and stable. It is specified and easy to test. Do not settle for lesser formats.` to `NM8hQr7qC10dRm0nNLO_A10nS68dNrFg754iO10nS54XQ5Ji73_o75_n76CkOLCdOa__O10WQaFVOL4nTH0oQm0oOMCoAX03Qm0iQrFVRqKoS5l_75OjRX0gOMCnOM7VOaxmQL4oRms`
+| Input | Output |
+| ----- | ------ |
+| Empty string | Empty string |
+| `JP` | `H_-` |
+| `Hello, World!` | `H5KgQ5wg74SjRalZ7F` |
+| `armor64 is safe, strict, and stable. It is specified and easy to test. Do not settle for lesser encodings.` | `NM8hQr7qC10dRm0nNLO_A10nS68dNrFg754iO10nS54XQ5Ji73_o75_n76CkOLCdOa__O10WQaFVOL4nTH0oQm0oOMCoAX03Qm0iQrFVRqKoS5l_75OjRX0gOMCnOM7VOLtYQqGdQaSnAV` |
 
 The following should fail to decode:
 
-- A single space.
-- `\r`
-- `\n`
-- `__==`
+| Input | Reason |
+| ----- | ------ |
+| space | Not in alphabet. |
+| carriage return | Not in alphabet. |
+| newline | Not in alphabet. |
+| `__==` | `=` not in alphabet. |
